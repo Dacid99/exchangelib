@@ -38,6 +38,9 @@ class Configuration:
 
     'max_connections' defines the max number of connections allowed for this server. This may be restricted by
     policies on the Exchange server.
+
+    'verify' defines whether any SSL certificates in the connection to the server will be verified. Defaults to
+    True. Only change deviate from this if really necessary as this opens you up to man-in-the-middle-type attacks.
     """
 
     def __init__(
@@ -49,6 +52,7 @@ class Configuration:
         version=None,
         retry_policy=None,
         max_connections=None,
+        verify=True,
     ):
         if not isinstance(credentials, (BaseCredentials, type(None))):
             raise InvalidTypeError("credentials", credentials, BaseCredentials)
@@ -69,6 +73,8 @@ class Configuration:
             raise InvalidTypeError("retry_policy", retry_policy, RetryPolicy)
         if not isinstance(max_connections, (int, type(None))):
             raise InvalidTypeError("max_connections", max_connections, int)
+        if not isinstance(verify, bool):
+            raise InvalidTypeError("verify", verify, bool)
         self._credentials = credentials
         if server:
             self.service_endpoint = f"https://{server}/EWS/Exchange.asmx"
@@ -78,6 +84,7 @@ class Configuration:
         self.version = version
         self.retry_policy = retry_policy
         self.max_connections = max_connections
+        self.verify = verify
 
     @property
     def credentials(self):

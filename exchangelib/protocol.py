@@ -148,6 +148,10 @@ class BaseProtocol:
     def server(self):
         return self.config.server
 
+    @property
+    def verify(self):
+        return self.config.verify
+
     def __getstate__(self):
         # The session pool and lock cannot be pickled
         state = self.__dict__.copy()
@@ -306,6 +310,7 @@ class BaseProtocol:
                 raise ValueError(f"Auth type {self.auth_type!r} requires credentials")
             session = self.raw_session(self.service_endpoint)
             session.auth = get_auth_instance(auth_type=self.auth_type)
+            session.verify = self.config.verify
         else:
             if isinstance(self.credentials, BaseOAuth2Credentials):
                 with self.credentials.lock:
