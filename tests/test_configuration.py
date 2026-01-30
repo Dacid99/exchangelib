@@ -41,6 +41,10 @@ class ConfigurationTest(TimedTestCase):
             Configuration(max_connections="foo")
         self.assertEqual(e.exception.args[0], "'max_connections' 'foo' must be of type <class 'int'>")
         self.assertEqual(Configuration().server, None)  # Test that property works when service_endpoint is None
+        with self.assertRaises(TypeError) as e:
+            Configuration(verify="foo")
+        self.assertEqual(e.exception.args[0], "'verify' 'foo' must be of type <class 'bool'>")
+        self.assertEqual(Configuration().verify, True)  # Test that property works when service_endpoint is None
 
     def test_magic(self):
         config = Configuration(

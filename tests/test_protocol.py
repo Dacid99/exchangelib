@@ -86,6 +86,7 @@ class ProtocolTest(EWSTest):
                 version=kwargs.get("version", Version(Build(15, 1))),
                 retry_policy=kwargs.get("retry_policy", FailFast()),
                 max_connections=kwargs.get("max_connections"),
+                verify=kwargs.get("verify", True),
             )
         )
 
